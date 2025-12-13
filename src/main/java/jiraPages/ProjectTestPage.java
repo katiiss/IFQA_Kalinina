@@ -15,8 +15,9 @@ public class ProjectTestPage {
     private final SelenideElement updatingTasks = $x("//span[contains(@class,'aui-iconfont-refresh')]").as("Обновление задач");
     private final SelenideElement searchButton = $x("//input[@id='quickSearchInput']").as("Поиск");
     private final SelenideElement businessProcessButton = $x("//a[@id='opsbar-transitions_more']").as("Кнопка бизнес-процесс");
-    private final SelenideElement completedButton = $x("//aui-item-link[@id='action_id_31']").as("Перевод задачи в выполнено");
+    private final SelenideElement completedButton = $x("//span [text()='Выполнено']").as("Перевод задачи в выполнено");
     private final SelenideElement requestHasBeenCreatedWindow = $x("//a[@class='issue-created-key issue-link']").as("Окно с номером бага");
+    private final SelenideElement openTasks = $x("//span [@id='issues-subnavigation-title']").as("Открытые задачи");
 
     public void allTasks() {
         switchFilterButton
@@ -36,8 +37,10 @@ public class ProjectTestPage {
         businessProcessButton
                 .shouldBe(Condition.visible, Duration.ofSeconds(10))
                 .click();
-        completedButton.click();
-}
+        completedButton
+                .shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .click();
+    }
 
     public void refreshTasks() {
         updatingTasks
@@ -64,5 +67,11 @@ public class ProjectTestPage {
         String[] parts = text.split("из");
         String numberStr = parts[1].trim();
         return Integer.parseInt(numberStr);
+    }
+
+    public String getOpenTasksText() {
+        return openTasks
+                .shouldBe(Condition.visible, Duration.ofSeconds(10))
+                .getText();
     }
 }

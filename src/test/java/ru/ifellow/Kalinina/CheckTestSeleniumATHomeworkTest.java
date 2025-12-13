@@ -19,15 +19,20 @@ public class CheckTestSeleniumATHomeworkTest extends WebHooks {
     private final String subject = "testikk";
     private final String status = "СДЕЛАТЬ";
     private final String version = "Version 2.0";
+    private final String taskATHomework = "TestSeleniumATHomework";
 
     private final String username = CustomProperties.getProps().getProperty("username");
     private final String password = CustomProperties.getProps().getProperty("password");
+    private final String checkingTheTest = "Лента активности";
+    private final String checkingTheTest2 = "Открытые задачи";
 
     @Test
     @DisplayName("Проверка в задаче TestSeleniumATHomework статус задачи и версию")
     void testCheckingStatusAndVersion() {
         loginPage.loginWithConfigCredentials(username, password);
+        assertEquals(dashboard.getActivityFeedText(), checkingTheTest, "После авторизации не отображается 'Лента активности");
         dashboard.navigateToTestProject();
+        assertEquals(checkingTheTest2, projectPage.getOpenTasksText(), "После перехода в проект не отображается надпись 'Открытые задачи'");
 
         projectPage.allTasks();
         projectPage.refreshTasks();
@@ -39,9 +44,11 @@ public class CheckTestSeleniumATHomeworkTest extends WebHooks {
         projectPage.allTasks();
 
         int updatedCount = projectPage.getTotalTasksCount();
-        assertEquals(initialCount + 1, updatedCount);
+        assertEquals(initialCount + 1, updatedCount, "После создания бага, общее количество задач не увеличилось");
 
-        assertEquals(status, task.getTaskStatus());
-        assertTrue(task.getFixInVersions().contains(version));
+        projectPage.searchAndSubmit(taskATHomework);
+
+        assertTrue(status.equals(task.getTaskStatus()), "Статус задачи не Сделать");
+        assertEquals(version, task.getFixInVersions(), "Исправить в версиях не Version 2.0");
     }
 }

@@ -1,5 +1,6 @@
 package jiraPages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
@@ -12,6 +13,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class DashboardPage {
     private final SelenideElement projectsButton = $x("//a[@id='browse_link']").as("Кнопка: Проекты");
     private final SelenideElement testButton = $x("//a[@id='admin_main_proj_link_lnk']").as("Кнопка: Test");
+    private final SelenideElement activityFeedText = $x("//h3 [text()='Лента активности']").as("Лента активности");
 
     public ProjectTestPage navigateToTestProject() {
         projectsButton
@@ -23,5 +25,11 @@ public class DashboardPage {
                 .click();
 
         return Selenide.page(ProjectTestPage.class);
+    }
+
+    public String getActivityFeedText() {
+        return activityFeedText
+                .shouldBe(Condition.visible, Duration.ofSeconds(10))
+                .getText();
     }
 }

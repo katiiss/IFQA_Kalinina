@@ -21,13 +21,16 @@ public class TaskCounterTest extends WebHooks {
 
     private final String username = CustomProperties.getProps().getProperty("username");
     private final String password = CustomProperties.getProps().getProperty("password");
+    private final String checkingTheTest = "Лента активности";
+    private final String checkingTheTest2 = "Открытые задачи";
 
     @Test
     @DisplayName("Проверка общего количества заведенных задач в проекте")
     void testTaskCounterWithQuickCreation() {
         loginPage.loginWithConfigCredentials(username, password);
+        assertEquals(dashboard.getActivityFeedText(), checkingTheTest, "После авторизации не отображается 'Лента активности");
         dashboard.navigateToTestProject();
-
+        assertEquals(checkingTheTest2, projectPage.getOpenTasksText(), "После перехода в проект не отображается надпись 'Открытые задачи'");
         projectPage.allTasks();
         projectPage.refreshTasks();
 
@@ -38,6 +41,6 @@ public class TaskCounterTest extends WebHooks {
         projectPage.allTasks();
 
         int updatedCount = projectPage.getTotalTasksCount();
-        assertEquals(initialCount + 1, updatedCount);
+        assertEquals(initialCount + 1, updatedCount, "После создания бага, общее количество задач не увеличилось");
     }
 }
