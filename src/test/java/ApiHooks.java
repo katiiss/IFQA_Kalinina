@@ -3,6 +3,7 @@ import org.junit.jupiter.api.BeforeAll;
 import utils.CustomProperties;
 
 public class ApiHooks {
+
     @BeforeAll
     public static void loadConfig() {
         CustomProperties.loadProperties();

@@ -4,11 +4,17 @@ import api.Specifications;
 import io.restassured.RestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import utils.CustomProperties;
 
+@Getter
 public abstract class BaseAuthApi {
-    protected static String authToken;
     protected static final String BASE_URL = CustomProperties.getProps().getProperty("baseAuth.url");
+    @Setter
+    @Getter
+    protected static String authToken;
 
     public BaseAuthApi() {
         RestAssured.requestSpecification = Specifications.baseRequestSpec(BASE_URL);
@@ -17,44 +23,26 @@ public abstract class BaseAuthApi {
                 .build();
     }
 
-    protected void setupWithAuth() {
-        if (authToken != null && !authToken.isEmpty()) {
-            RestAssured.requestSpecification = Specifications.requestWithAuthSpec(BASE_URL, authToken);
+    @SneakyThrows
+    protected String extractToken(String response) {
+        if (response == null || response.isBlank()) {
+            return null;
         }
+        response = response.trim();
+        if (response.startsWith("{")) {
+            org.json.JSONObject json = new org.json.JSONObject(response);
+            return json.optString("token", null);
+        }
+        String[] patterns = {"token :", "token:"};
+        for (String pattern : patterns) {
+            if (response.contains(pattern)) {
+                return response.split(pattern)[1].trim();
+            }
+        }
+        return response;
     }
 
-    /**
-     * Метод для сброса настройки к базовой (без авторизации)
-     */
-    protected void resetToBaseAuth() {
-        RestAssured.requestSpecification = Specifications.baseRequestSpec(BASE_URL);
-    }
-
-    /**
-     * Получение файла с учетными данными
-     */
-    protected File getCredentialsFile() {
-        return new File(CREDENTIALS_FILE_PATH);
-    }
-
-    /**
-     * Сохранение токена
-     */
-    protected void setAuthToken(String token) {
-        authToken = token;
-    }
-
-    /**
-     * Получение токена
-     */
-    protected String getAuthToken() {
-        return authToken;
-    }
-
-    /**
-     * Очистка токена
-     */
-    protected void clearAuthToken() {
+    public static void clearToken() {
         authToken = null;
     }
 }
