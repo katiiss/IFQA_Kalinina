@@ -23,4 +23,26 @@ public class Specifications {
                 .log(LogDetail.ALL)
                 .build();
     }
+
+    public static RequestSpecification requestWithAuthSpec(String url, String token) {
+        return new RequestSpecBuilder()
+                .setBaseUri(url)
+                .setContentType(ContentType.JSON)
+                .addHeader("Authorization", token)
+                .log(LogDetail.ALL)
+                .build();
+    }
+
+    public static ResponseSpecification unauthorizedResponseSpec() {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(401)
+                .log(LogDetail.ALL)
+                .build();
+    }
+
+    public static ResponseSpecification baseResponseSpec() {
+        return new ResponseSpecBuilder()
+                .log(LogDetail.ALL)
+                .build();
+    }
 }

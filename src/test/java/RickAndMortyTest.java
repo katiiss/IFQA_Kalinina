@@ -5,7 +5,7 @@ import steps.RickAndMortySteps;
 
 import java.util.Map;
 
-public class RickAndMortyTest extends WebHooks{
+public class RickAndMortyTest extends ApiHooks {
     private static final RickAndMortySteps rickAndMortySteps = new RickAndMortySteps();
 
     @Test
@@ -22,7 +22,6 @@ public class RickAndMortyTest extends WebHooks{
 
         Map<String, Object> comparison = rickAndMortySteps.compareCharacterWithMorty(lastCharacterUrl);
         Assertions.assertNotEquals(comparison.get("characterName"), comparison.get("mortyName"),
-                "Мы должны сравнивать Морти с другим персонажем"
-        );
+                "Нужно сравнивать Морти с другим персонажем");
     }
 }
