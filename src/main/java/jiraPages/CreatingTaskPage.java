@@ -28,46 +28,109 @@ public class CreatingTaskPage {
     private final SelenideElement sprintField = $x("//input[@id='customfield_10104-field']").as("Выбор спринта");
     private final SelenideElement severityList = $x("//select[@id='customfield_10400']/option [@value='10101']").as("Выбор серьезности");
     private final SelenideElement creatingBugWithDescription = $x("//input[@id='create-issue-submit']").as("Кнопка создание после записи описания бага");
+    private final SelenideElement visualEditorBody = $x("//body").as("Тело визуального редактора");
 
     private static final String TYPE = "Ошибка";
 
     public void createBug(String project, String subject, String description,
                           String priority, String labels, String environment,
                           String tasks, String epicLink, String sprint) {
+        startBugCreation();
+        fillProjectAndTypeAndTopic(project,subject);
+        fillDescription(description);
+        fixVersions();
+        choosePriority(priority);
+        selectLabel(labels);
+        fillEnvironment(environment);
+        selectAffectedVersions();
+        selectRelatedTasksAndTask(tasks);
+        choosePerformer();
+        chooseLinkEpic(epicLink);
+        chooseSprint(sprint);
+        chooseSeverity();
+        finalBugCreation();
+    }
+
+    private void startBugCreation() {
         createBugButton.click();
-        projectField.shouldBe(visible, Duration.ofSeconds(10)).setValue(project).press(Keys.TAB);
-        issueTypeField.shouldBe(visible, Duration.ofSeconds(10)).setValue(TYPE).press(Keys.ENTER);
+    }
+
+    private void fillProjectAndTypeAndTopic(String project, String subject) {
+        projectField.shouldBe(visible, Duration.ofSeconds(10))
+                .setValue(project)
+                .press(Keys.TAB);
+        issueTypeField.shouldBe(visible, Duration.ofSeconds(10))
+                .setValue(TYPE)
+                .press(Keys.ENTER);
         subjectField.setValue(subject);
+    }
+
+    private void fillDescription(String description) {
         if (!"true".equals(visualDescriptionButton.getAttribute("aria-pressed"))) {
             visualDescriptionButton.shouldBe(visible, Duration.ofSeconds(10)).click();
         }
         switchTo().frame(descriptionField);
-        $("body").setValue(description);
+        visualEditorBody.setValue(description);
         switchTo().defaultContent();
+    }
+
+    private void fixVersions() {
         fixVersionsButton.click();
-        priorityButton.shouldBe(visible, Duration.ofSeconds(10)).setValue(priority).press(Keys.ENTER);
-        labelField.setValue(labels).press(Keys.ENTER);
+    }
+
+    private void choosePriority(String priority) {
+        priorityButton.shouldBe(visible, Duration.ofSeconds(10))
+                .setValue(priority)
+                .press(Keys.ENTER);
+    }
+
+    private void selectLabel(String labels) {
+        labelField.setValue(labels)
+                .press(Keys.ENTER);
+    }
+
+    private void fillEnvironment(String environment) {
         if (!"true".equals(visualEnvironmentButton.getAttribute("aria-pressed"))) {
             visualEnvironmentButton.shouldBe(visible, Duration.ofSeconds(10)).click();
         }
         switchTo().frame(environmentField);
-        $("body").setValue(environment);
+        visualEditorBody.setValue(environment);
         switchTo().defaultContent();
+    }
+
+    private void selectAffectedVersions() {
         affectedVersionsButton.click();
+    }
+
+    private void selectRelatedTasksAndTask(String tasks) {
         relatedTasksButton.click();
-        taskField.setValue(tasks).press(Keys.TAB);
+        taskField.setValue(tasks)
+                .press(Keys.TAB);
+    }
+
+    private void choosePerformer() {
         executorButton.click();
+    }
+
+    private void chooseLinkEpic(String epicLink) {
         linkEpicField.sendKeys(epicLink + Keys.DOWN + Keys.ENTER);
+    }
+
+    private void chooseSprint(String sprint) {
         sprintField.sendKeys(sprint + Keys.DOWN + Keys.ENTER);
+    }
+
+    private void chooseSeverity() {
         severityList.click();
+    }
+
+    private void finalBugCreation() {
         creatingBugWithDescription.click();
     }
 
     public void createQuickTaskSimple(String project, String subject) {
-        createBugButton.click();
-        projectField.shouldBe(visible, Duration.ofSeconds(10)).setValue(project).press(Keys.TAB);
-        issueTypeField.shouldBe(visible, Duration.ofSeconds(10)).setValue(TYPE).press(Keys.ENTER);
-        subjectField.setValue(subject);
-        creatingBugWithDescription.click();
+        startBugCreation();
+        fillProjectAndTypeAndTopic(project,subject);
+        finalBugCreation();
     }
 }

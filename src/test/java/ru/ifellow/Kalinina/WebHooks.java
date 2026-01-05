@@ -20,8 +20,10 @@ public class WebHooks {
     @BeforeEach
     public void initBrowser() {
 
+        System.setProperty("webdriver.chrome.driver", CustomProperties.getProps().getProperty("chromeDriverPath"));
+        Configuration.browser = CustomProperties.getProps().getProperty("browser");
         Configuration.pageLoadStrategy = PageLoadStrategy.EAGER.toString();
-        Configuration.timeout = 15000;
+        Configuration.timeout = Integer.parseInt(CustomProperties.getProps().getProperty("timeout"));
         Selenide.open(CustomProperties.getProps().getProperty("base.url"));
         getWebDriver().manage().window().maximize();
     }
