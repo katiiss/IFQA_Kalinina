@@ -3,7 +3,6 @@ package jiraSteps;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 import jiraPages.CreatingTaskPage;
-import jiraPages.ProjectTestPage;
 import jiraPages.TestSeleniumATHomeworkPage;
 import utils.CustomProperties;
 
@@ -11,11 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CreatingTaskSteps {
     private final CreatingTaskPage taskPage = new CreatingTaskPage();
-    private final ProjectTestPage projectPage = new ProjectTestPage();
     private final TestSeleniumATHomeworkPage testTaskPage = new TestSeleniumATHomeworkPage();
-
-    private int initialCount;
-    private int updatedCount;
 
     @Когда("пользователь создает баг с описанием")
     public void userCreatesBugWithDescription() {

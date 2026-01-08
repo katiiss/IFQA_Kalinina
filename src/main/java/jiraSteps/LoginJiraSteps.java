@@ -25,5 +25,4 @@ public class LoginJiraSteps {
         String actualText = dashboardPage.getActivityFeedText();
         assertEquals(actualText, checkingTheTest, "После авторизации не отображается 'Лента активности");
     }
-
 }
