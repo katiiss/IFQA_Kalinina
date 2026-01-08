@@ -1,9 +1,8 @@
 package steps;
 
-import api.Auth.AuthApi;
+import api.AuthApi;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
-import utils.CustomProperties;
 
 public class AuthSteps {
     private static final AuthApi authApi = new AuthApi();
@@ -38,7 +37,7 @@ public class AuthSteps {
     }
 
     public String getSavedToken() {
-        return authApi.getAuthToken();
+        return authApi.getStoredToken();
     }
 
     public void clearSavedToken() {

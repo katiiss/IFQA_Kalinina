@@ -1,9 +1,11 @@
 package steps;
 
-import api.rickAndMorty.RickAndMortyApi;
-import api.rickAndMorty.models.CharacterResponse;
-import api.rickAndMorty.models.EpisodeResponse;
+import api.RickAndMortyApi;
+import api.rickAndMortyModels.Character;
+import api.rickAndMortyModels.Episode;
+import io.restassured.response.ValidatableResponse;
 import lombok.Data;
+import utils.CustomProperties;
 
 import java.util.List;
 import java.util.Map;
@@ -11,30 +13,29 @@ import java.util.Map;
 @Data
 public class RickAndMortySteps {
     private static final RickAndMortyApi rickAndMortyApi = new RickAndMortyApi();
-    private static final String MORTY_NAME = "Morty Smith";
+    private static final String MORTY_NAME = CustomProperties.getProps().getProperty("mortyName");
 
     public String getMortyLastEpisode() {
-        CharacterResponse response = rickAndMortyApi.getCharacterByName(MORTY_NAME);
-        CharacterResponse.CharacterResult morty = response.getResults().get(0);
-        List<String> episodes = morty.getEpisode();
-
+        ValidatableResponse response = rickAndMortyApi.getCharacterByName(MORTY_NAME);
+        Character character = response.extract().jsonPath().getObject("results[0]", Character.class);
+        List<String> episodes = character.getEpisode();
         return episodes.get(episodes.size() - 1);
     }
 
     public String getLastCharacterFromEpisode(String episodeUrl) {
-        EpisodeResponse.EpisodeResult episode = rickAndMortyApi.getEpisodeByUrl(episodeUrl);
+        ValidatableResponse response = rickAndMortyApi.getResourceByUrl(episodeUrl);
+        Episode episode = response.extract().as(Episode.class);
         List<String> characters = episode.getCharacters();
-
         return characters.get(characters.size() - 1);
     }
 
-    public CharacterResponse.CharacterResult getCharacterInfo(String characterUrl) {
-        return rickAndMortyApi.getCharacterByUrl(characterUrl);
+    public Character getCharacterInfo(String characterUrl) {
+        ValidatableResponse response = rickAndMortyApi.getResourceByUrl(characterUrl);
+        return response.extract().as(Character.class);
     }
 
     public Map<String, String> getCharacterSpeciesAndLocation(String characterUrl) {
-        CharacterResponse.CharacterResult character = getCharacterInfo(characterUrl);
-
+        Character character = getCharacterInfo(characterUrl);
         return Map.of(
                 "name", character.getName(),
                 "species", character.getSpecies(),
@@ -42,14 +43,14 @@ public class RickAndMortySteps {
         );
     }
 
-    public CharacterResponse.CharacterResult getMortyInfo() {
-        CharacterResponse response = rickAndMortyApi.getCharacterByName(MORTY_NAME);
-        return response.getResults().get(0);
+    public Character getMortyInfo() {
+        ValidatableResponse response = rickAndMortyApi.getCharacterByName(MORTY_NAME);
+        return response.extract().jsonPath().getObject("results[0]", Character.class);
     }
 
     public Map<String, Object> compareCharacterWithMorty(String characterUrl) {
-        CharacterResponse.CharacterResult morty = getMortyInfo();
-        CharacterResponse.CharacterResult character = getCharacterInfo(characterUrl);
+        Character morty = getMortyInfo();
+        Character character = getCharacterInfo(characterUrl);
 
         boolean sameSpecies = morty.getSpecies().equals(character.getSpecies());
         boolean sameLocation = morty.getLocation().getName().equals(character.getLocation().getName());

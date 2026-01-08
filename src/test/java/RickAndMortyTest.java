@@ -53,5 +53,9 @@ public class RickAndMortyTest extends ApiHooks {
         Map<String, Object> comparison = rickAndMortySteps.compareCharacterWithMorty(lastCharacterUrl);
         Assertions.assertNotEquals(comparison.get("characterName"), comparison.get("mortyName"),
                 "Нужно сравнивать Морти с другим персонажем");
+        Assertions.assertEquals(comparison.get("mortySpecies"), comparison.get("characterSpecies"),
+                "Раса персонажа должна совпадать с расой Морти. ");
+        Assertions.assertNotEquals(comparison.get("mortyLocation"), comparison.get("characterLocation"),
+                "Локация персонажа не должна совпадать с локацией Морти");
     }
 }
