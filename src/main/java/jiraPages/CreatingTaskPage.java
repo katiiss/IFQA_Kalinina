@@ -1,6 +1,7 @@
 package jiraPages;
 
 import com.codeborne.selenide.SelenideElement;
+import lombok.Data;
 import org.openqa.selenium.Keys;
 
 import java.time.Duration;
@@ -8,6 +9,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
+@Data
 public class CreatingTaskPage {
     private final SelenideElement createBugButton = $x("//a[@id='create_link']").as("Кнопка: Создание задачи");
     private final SelenideElement projectField = $x("//input[@id='project-field']").as("Поле выбора проекта для задачи");
@@ -51,11 +53,11 @@ public class CreatingTaskPage {
         finalBugCreation();
     }
 
-    private void startBugCreation() {
+    public void startBugCreation() {
         createBugButton.click();
     }
 
-    private void fillProjectAndTypeAndTopic(String project, String subject) {
+    public void fillProjectAndTypeAndTopic(String project, String subject) {
         projectField.shouldBe(visible, Duration.ofSeconds(10))
                 .setValue(project)
                 .press(Keys.TAB);
@@ -65,7 +67,7 @@ public class CreatingTaskPage {
         subjectField.setValue(subject);
     }
 
-    private void fillDescription(String description) {
+    public void fillDescription(String description) {
         if (!"true".equals(visualDescriptionButton.getAttribute("aria-pressed"))) {
             visualDescriptionButton.shouldBe(visible, Duration.ofSeconds(10)).click();
         }
@@ -74,22 +76,22 @@ public class CreatingTaskPage {
         switchTo().defaultContent();
     }
 
-    private void fixVersions() {
+    public void fixVersions() {
         fixVersionsButton.click();
     }
 
-    private void choosePriority(String priority) {
+    public void choosePriority(String priority) {
         priorityButton.shouldBe(visible, Duration.ofSeconds(10))
                 .setValue(priority)
                 .press(Keys.ENTER);
     }
 
-    private void selectLabel(String labels) {
+    public void selectLabel(String labels) {
         labelField.setValue(labels)
                 .press(Keys.ENTER);
     }
 
-    private void fillEnvironment(String environment) {
+    public void fillEnvironment(String environment) {
         if (!"true".equals(visualEnvironmentButton.getAttribute("aria-pressed"))) {
             visualEnvironmentButton.shouldBe(visible, Duration.ofSeconds(10)).click();
         }
@@ -98,33 +100,33 @@ public class CreatingTaskPage {
         switchTo().defaultContent();
     }
 
-    private void selectAffectedVersions() {
+    public void selectAffectedVersions() {
         affectedVersionsButton.click();
     }
 
-    private void selectRelatedTasksAndTask(String tasks) {
+    public void selectRelatedTasksAndTask(String tasks) {
         relatedTasksButton.click();
         taskField.setValue(tasks)
                 .press(Keys.TAB);
     }
 
-    private void choosePerformer() {
+    public void choosePerformer() {
         executorButton.click();
     }
 
-    private void chooseLinkEpic(String epicLink) {
+    public void chooseLinkEpic(String epicLink) {
         linkEpicField.sendKeys(epicLink + Keys.DOWN + Keys.ENTER);
     }
 
-    private void chooseSprint(String sprint) {
+    public void chooseSprint(String sprint) {
         sprintField.sendKeys(sprint + Keys.DOWN + Keys.ENTER);
     }
 
-    private void chooseSeverity() {
+    public void chooseSeverity() {
         severityList.click();
     }
 
-    private void finalBugCreation() {
+    public void finalBugCreation() {
         creatingBugWithDescription.click();
     }
 

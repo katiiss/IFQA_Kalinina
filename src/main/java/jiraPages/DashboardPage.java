@@ -3,6 +3,7 @@ package jiraPages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import lombok.Data;
 
 import java.time.Duration;
 
@@ -10,6 +11,7 @@ import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 
+@Data
 public class DashboardPage {
     private final SelenideElement projectsButton = $x("//a[@id='browse_link']").as("Кнопка: Проекты");
     private final SelenideElement testButton = $x("//a[@id='admin_main_proj_link_lnk']").as("Кнопка: Test");
