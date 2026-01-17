@@ -16,11 +16,9 @@ public class LoginJiraPage {
     private final SelenideElement loginButton = $x("//input[@id='login']").as("Кнопка: Войти");
 
     public void loginWithConfigCredentials(String username, String password) {
-
         usernameField.shouldBe(Condition.visible, Duration.ofSeconds(10)).setValue(username);
         passwordField.shouldBe(Condition.visible, Duration.ofSeconds(10)).setValue(password);
         loginButton.click();
-
         Selenide.page(DashboardPage.class);
     }
 }

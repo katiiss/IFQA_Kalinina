@@ -23,7 +23,6 @@ public class CreatingTaskSteps {
         String tasks = CustomProperties.getProps().getProperty("tasks");
         String epicLink = CustomProperties.getProps().getProperty("epicLink");
         String sprint = CustomProperties.getProps().getProperty("sprint");
-
         taskPage.createBug(project, subject, description, priority, labels,
                 environment, tasks, epicLink, sprint);
     }
@@ -36,5 +35,4 @@ public class CreatingTaskSteps {
         assertEquals(checkingTheStatus, actualStatus,
                 "Статус задачи не переведен в " + checkingTheStatus);
     }
-
 }

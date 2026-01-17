@@ -1,4 +1,4 @@
-package jiraSteps;
+package ru.ifellow.Kalinina.hooks;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
@@ -11,7 +11,6 @@ import utils.CustomProperties;
 import static com.codeborne.selenide.Selenide.open;
 
 public class Hooks {
-
     @BeforeAll
     public static void loadConfig() {
         CustomProperties.loadProperties();
@@ -19,9 +18,15 @@ public class Hooks {
 
     @Before
     public void initBrowser() {
-        CustomProperties.loadProperties();
+        String chromeDriverPath = CustomProperties.getProps().getProperty("chrome.driver.path");
+        String driverVersion = CustomProperties.getProps().getProperty("driver.version");
 
-        System.setProperty("webdriver.chrome.driver", CustomProperties.getProps().getProperty("chromeDriverPath"));
+        if (chromeDriverPath != null && !chromeDriverPath.trim().isEmpty()) {
+            System.setProperty("webdriver.chrome.driver", chromeDriverPath.trim());
+        }
+        else if (driverVersion != null && !driverVersion.trim().isEmpty()) {
+            Configuration.browserVersion = driverVersion.trim();
+        }
         Configuration.browser = CustomProperties.getProps().getProperty("browser");
         Configuration.pageLoadStrategy = PageLoadStrategy.EAGER.toString();
         Configuration.timeout = Integer.parseInt(CustomProperties.getProps().getProperty("timeout"));

@@ -20,10 +20,8 @@ public class DashboardPage {
                 .shouldBe(visible, Duration.ofSeconds(10))
                 .shouldBe(enabled, Duration.ofSeconds(5))
                 .click();
-
         testButton
                 .click();
-
         return Selenide.page(ProjectTestPage.class);
     }
 

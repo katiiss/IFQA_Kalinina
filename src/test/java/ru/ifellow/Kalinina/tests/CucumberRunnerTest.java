@@ -1,4 +1,4 @@
-package ru.ifellow.Kalinina;
+package ru.ifellow.Kalinina.tests;
 
 import io.cucumber.junit.platform.engine.Constants;
 import org.junit.platform.suite.api.ConfigurationParameter;
@@ -12,7 +12,7 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
-@ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "jiraSteps")
+@ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "ru.ifellow.Kalinina.hooks, jiraSteps")
 @ConfigurationParameter(key = Constants.EXECUTION_DRY_RUN_PROPERTY_NAME, value = "false")
 
 public class CucumberRunnerTest {

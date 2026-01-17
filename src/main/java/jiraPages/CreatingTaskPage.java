@@ -3,11 +3,13 @@ package jiraPages;
 import com.codeborne.selenide.SelenideElement;
 import lombok.Data;
 import org.openqa.selenium.Keys;
+import utils.CustomProperties;
 
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 @Data
 public class CreatingTaskPage {
@@ -32,13 +34,13 @@ public class CreatingTaskPage {
     private final SelenideElement creatingBugWithDescription = $x("//input[@id='create-issue-submit']").as("Кнопка создание после записи описания бага");
     private final SelenideElement visualEditorBody = $x("//body").as("Тело визуального редактора");
 
-    private static final String TYPE = "Ошибка";
+    private static final String TYPE = CustomProperties.getProps().getProperty("type");
 
     public void createBug(String project, String subject, String description,
                           String priority, String labels, String environment,
                           String tasks, String epicLink, String sprint) {
         startBugCreation();
-        fillProjectAndTypeAndTopic(project,subject);
+        fillProjectAndTypeAndTopic(project, subject);
         fillDescription(description);
         fixVersions();
         choosePriority(priority);
@@ -132,7 +134,7 @@ public class CreatingTaskPage {
 
     public void createQuickTaskSimple(String project, String subject) {
         startBugCreation();
-        fillProjectAndTypeAndTopic(project,subject);
+        fillProjectAndTypeAndTopic(project, subject);
         finalBugCreation();
     }
 }
