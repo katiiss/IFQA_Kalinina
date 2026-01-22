@@ -1,8 +1,9 @@
-package ru.ifellow.Kalinina;
+package ru.ifellow.Kalinina.test;
 
 import jiraPages.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.ifellow.Kalinina.hooks.WebHooks;
 import utils.CustomProperties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

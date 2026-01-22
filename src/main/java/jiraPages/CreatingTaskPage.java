@@ -1,7 +1,9 @@
 package jiraPages;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
+import utils.CustomProperties;
 
 import java.time.Duration;
 
@@ -29,14 +31,15 @@ public class CreatingTaskPage {
     private final SelenideElement severityList = $x("//select[@id='customfield_10400']/option [@value='10101']").as("Выбор серьезности");
     private final SelenideElement creatingBugWithDescription = $x("//input[@id='create-issue-submit']").as("Кнопка создание после записи описания бага");
     private final SelenideElement visualEditorBody = $x("//body").as("Тело визуального редактора");
+    private static final String TYPE = CustomProperties.getProps().getProperty("type");
+    ;
 
-    private static final String TYPE = "Ошибка";
-
+    @Step("Создание бага с параметрами: проект={project}, тема={subject}, приоритет={priority}, метки: {labels},описание бага: {description},окружение: {environment},связанные задачи: {tasks},эпик: {epicLink},спринт: {sprint}" )
     public void createBug(String project, String subject, String description,
                           String priority, String labels, String environment,
                           String tasks, String epicLink, String sprint) {
         startBugCreation();
-        fillProjectAndTypeAndTopic(project,subject);
+        fillProjectAndTypeAndTopic(project, subject);
         fillDescription(description);
         fixVersions();
         choosePriority(priority);
@@ -51,10 +54,12 @@ public class CreatingTaskPage {
         finalBugCreation();
     }
 
+    @Step("Нажать на кнопку 'Создать задачу'")
     private void startBugCreation() {
         createBugButton.click();
     }
 
+    @Step("Заполнить проект, тип и тему: проект={project}, тема={subject}")
     private void fillProjectAndTypeAndTopic(String project, String subject) {
         projectField.shouldBe(visible, Duration.ofSeconds(10))
                 .setValue(project)
@@ -65,6 +70,7 @@ public class CreatingTaskPage {
         subjectField.setValue(subject);
     }
 
+    @Step("Заполнить описание бага: {description}")
     private void fillDescription(String description) {
         if (!"true".equals(visualDescriptionButton.getAttribute("aria-pressed"))) {
             visualDescriptionButton.shouldBe(visible, Duration.ofSeconds(10)).click();
@@ -74,21 +80,25 @@ public class CreatingTaskPage {
         switchTo().defaultContent();
     }
 
+    @Step("Выбрать версию для исправления")
     private void fixVersions() {
         fixVersionsButton.click();
     }
 
+    @Step("Выбрать приоритет: {priority}")
     private void choosePriority(String priority) {
         priorityButton.shouldBe(visible, Duration.ofSeconds(10))
                 .setValue(priority)
                 .press(Keys.ENTER);
     }
 
+    @Step("Выбрать метки: {labels}")
     private void selectLabel(String labels) {
         labelField.setValue(labels)
                 .press(Keys.ENTER);
     }
 
+    @Step("Заполнить окружение: {environment}")
     private void fillEnvironment(String environment) {
         if (!"true".equals(visualEnvironmentButton.getAttribute("aria-pressed"))) {
             visualEnvironmentButton.shouldBe(visible, Duration.ofSeconds(10)).click();
@@ -98,39 +108,47 @@ public class CreatingTaskPage {
         switchTo().defaultContent();
     }
 
+    @Step("Выбрать затронутые версии")
     private void selectAffectedVersions() {
         affectedVersionsButton.click();
     }
 
+    @Step("Выбрать связанные задачи: {tasks}")
     private void selectRelatedTasksAndTask(String tasks) {
         relatedTasksButton.click();
         taskField.setValue(tasks)
                 .press(Keys.TAB);
     }
 
+    @Step("Назначить исполнителем себя")
     private void choosePerformer() {
         executorButton.click();
     }
 
+    @Step("Выбрать ссылку на эпик: {epicLink}")
     private void chooseLinkEpic(String epicLink) {
         linkEpicField.sendKeys(epicLink + Keys.DOWN + Keys.ENTER);
     }
 
+    @Step("Выбрать спринт: {sprint}")
     private void chooseSprint(String sprint) {
         sprintField.sendKeys(sprint + Keys.DOWN + Keys.ENTER);
     }
 
+    @Step("Выбрать серьезность")
     private void chooseSeverity() {
         severityList.click();
     }
 
+    @Step("Завершить создание бага")
     private void finalBugCreation() {
         creatingBugWithDescription.click();
     }
 
+    @Step("Быстрое создание простой задачи: проект={project}, тема={subject}")
     public void createQuickTaskSimple(String project, String subject) {
         startBugCreation();
-        fillProjectAndTypeAndTopic(project,subject);
+        fillProjectAndTypeAndTopic(project, subject);
         finalBugCreation();
     }
 }

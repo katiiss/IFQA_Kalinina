@@ -3,6 +3,8 @@ package jiraPages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 
 import java.time.Duration;
 
@@ -14,11 +16,13 @@ public class LoginJiraPage {
     private final SelenideElement loginButton = $x("//input[@id='login']").as("Кнопка: Войти");
 
     public DashboardPage loginWithConfigCredentials(String username, String password) {
-
-        usernameField.shouldBe(Condition.visible, Duration.ofSeconds(10)).setValue(username);
-        passwordField.shouldBe(Condition.visible, Duration.ofSeconds(10)).setValue(password);
-        loginButton.click();
-
+        Allure.step("Авторизоваться в Jira", () -> {
+            Allure.parameter("username", username);
+            Allure.parameter("password", "***");
+            usernameField.shouldBe(Condition.visible, Duration.ofSeconds(10)).setValue(username);
+            passwordField.shouldBe(Condition.visible, Duration.ofSeconds(10)).setValue(password);
+            loginButton.click();
+        });
         return Selenide.page(DashboardPage.class);
     }
 }
