@@ -2,13 +2,14 @@ package ru.ifellow.Kalinina.test;
 
 import jiraPages.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import ru.ifellow.Kalinina.hooks.WebHooks;
 import utils.CustomProperties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DisplayName("Тесты для проверки функциональности JIRA")
 public class IfellowHW3Test extends WebHooks {
     private final LoginJiraPage loginPage = new LoginJiraPage();
     private final DashboardPage dashboard = new DashboardPage();
@@ -37,6 +38,7 @@ public class IfellowHW3Test extends WebHooks {
 
     @Test
     @DisplayName("Тест авторизации")
+    @Tag("ID-1")
     void successfulLoginTest() {
         loginPage.loginWithConfigCredentials(username, password);
         assertEquals(dashboard.getActivityFeedText(), checkingTheTest, "После авторизации не отображается 'Лента активности");
@@ -44,6 +46,7 @@ public class IfellowHW3Test extends WebHooks {
 
     @Test
     @DisplayName("Тест перехода в проект Test")
+    @Tag("ID-2")
     void testNavigateToTestProjectPage() {
         loginPage.loginWithConfigCredentials(username, password);
         assertEquals(dashboard.getActivityFeedText(), checkingTheTest, "После авторизации не отображается 'Лента активности");
@@ -52,12 +55,14 @@ public class IfellowHW3Test extends WebHooks {
     }
 
     @Test
-    @DisplayName("Проверка общего количества заведенных задач в проекте")
+    @DisplayName("Тест проверки общего количества заведенных задач в проекте")
+    @Tag("ID-3")
     void testTaskCounterWithQuickCreation() {
         loginPage.loginWithConfigCredentials(username, password);
         assertEquals(dashboard.getActivityFeedText(), checkingTheTest, "После авторизации не отображается 'Лента активности");
         dashboard.navigateToTestProject();
         assertEquals(checkingTheTest2, projectPage.getOpenTasksText(), "После перехода в проект не отображается надпись 'Открытые задачи'");
+
         projectPage.allTasks();
         projectPage.refreshTasks();
 
@@ -72,7 +77,8 @@ public class IfellowHW3Test extends WebHooks {
     }
 
     @Test
-    @DisplayName("Проверка в задаче TestSeleniumATHomework статус задачи и версию")
+    @DisplayName("Тест проверки в задаче TestSeleniumATHomework статус задачи и версию")
+    @Tag("ID-4")
     void testCheckingStatusAndVersion() {
         loginPage.loginWithConfigCredentials(username, password);
         assertEquals(dashboard.getActivityFeedText(), checkingTheTest, "После авторизации не отображается 'Лента активности");
@@ -92,13 +98,13 @@ public class IfellowHW3Test extends WebHooks {
         assertEquals(initialCount + 1, updatedCount, "После создания бага, общее количество задач не увеличилось");
 
         projectPage.searchAndSubmit(taskATHomework);
-
-        assertTrue(status.equals(task.getTaskStatus()), "Статус задачи не Сделать");
+        assertEquals(status, task.getTaskStatus(), "Статус задачи не Сделать");
         assertEquals(version, task.getFixInVersions(), "Исправить в версиях не Version 2.0");
     }
 
     @Test
-    @DisplayName("Проверка создания бага и его перевод в выполнено")
+    @DisplayName("Тест проверки создания бага и его перевод в выполнено")
+    @Tag("ID-5")
     void creatingBugWithDescriptionAndStatusTranslation() {
         loginPage.loginWithConfigCredentials(username, password);
         assertEquals(dashboard.getActivityFeedText(), checkingTheTest, "После авторизации не отображается 'Лента активности");
@@ -118,7 +124,7 @@ public class IfellowHW3Test extends WebHooks {
         assertEquals(initialCount + 1, updatedCount, "После создания бага, общее количество задач не увеличилось");
 
         projectPage.searchAndSubmit(taskATHomework);
-        assertTrue(status.equals(task.getTaskStatus()), "Статус задачи не Сделать");
+        assertEquals(status, task.getTaskStatus(), "Статус задачи не Сделать");
         assertEquals(version, task.getFixInVersions(), "Исправить в версиях не Version 2.0");
 
         taskPage.createBug(project, subject, description, priority, labels, environment, tasks, epicLink, sprint);

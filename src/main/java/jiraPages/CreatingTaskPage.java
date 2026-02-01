@@ -8,7 +8,8 @@ import utils.CustomProperties;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 public class CreatingTaskPage {
     private final SelenideElement createBugButton = $x("//a[@id='create_link']").as("Кнопка: Создание задачи");
@@ -32,9 +33,8 @@ public class CreatingTaskPage {
     private final SelenideElement creatingBugWithDescription = $x("//input[@id='create-issue-submit']").as("Кнопка создание после записи описания бага");
     private final SelenideElement visualEditorBody = $x("//body").as("Тело визуального редактора");
     private static final String TYPE = CustomProperties.getProps().getProperty("type");
-    ;
 
-    @Step("Создание бага с параметрами: проект={project}, тема={subject}, приоритет={priority}, метки: {labels},описание бага: {description},окружение: {environment},связанные задачи: {tasks},эпик: {epicLink},спринт: {sprint}" )
+    @Step("Создание бага с параметрами: проект={project}, тема={subject}, приоритет={priority}, метки: {labels},описание бага: {description},окружение: {environment},связанные задачи: {tasks},эпик: {epicLink},спринт: {sprint}")
     public void createBug(String project, String subject, String description,
                           String priority, String labels, String environment,
                           String tasks, String epicLink, String sprint) {

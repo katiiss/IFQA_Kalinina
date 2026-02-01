@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class CustomProperties {
-
     @Getter
     private static Properties props = new Properties();
 

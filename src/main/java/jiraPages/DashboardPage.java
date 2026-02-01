@@ -17,14 +17,14 @@ public class DashboardPage {
     private final SelenideElement activityFeedText = $x("//h3[@id='gadget-10003-title']").as("Лента активности");
 
     @Step("Перейти в проект Test через Dashboard")
-    public ProjectTestPage navigateToTestProject() {
+    public void navigateToTestProject() {
         projectsButton
                 .shouldBe(visible, Duration.ofSeconds(10))
                 .shouldBe(enabled, Duration.ofSeconds(5))
                 .click();
         testButton
                 .click();
-        return Selenide.page(ProjectTestPage.class);
+        Selenide.page(ProjectTestPage.class);
     }
 
     @Step("Получить текст ленты активности")
