@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class JsonEdit {
-    private static final String AUTH_JSON = CustomProperties.getProps().getProperty("auth.json.path");
+    private static final String AUTH_JSON = ("src/test/resources/authorization.json");
     private static String originalAuthJson;
 
     @SneakyThrows

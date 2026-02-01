@@ -1,10 +1,10 @@
 package api;
 
 import io.restassured.response.ValidatableResponse;
+import lombok.Getter;
 import utils.CustomProperties;
 
-import static com.codeborne.selenide.Configuration.baseUrl;
-
+@Getter
 public class RickAndMortyApi extends BaseApi {
     private static final String CHARACTER_URL = CustomProperties.getProps().getProperty("character");
     private static final String RICK_AND_MORTY_URL = CustomProperties.getProps().getProperty("rickAndMortyURL");
