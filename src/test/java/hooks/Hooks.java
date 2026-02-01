@@ -1,11 +1,11 @@
 package hooks;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import io.cucumber.java.BeforeAll;
+import io.cucumber.java.AfterAll;
 import utils.CustomProperties;
 import utils.JsonEdit;
 
-public class ApiHooks {
+public class Hooks {
 
     @BeforeAll
     public static void loadConfig() {
