@@ -1,9 +1,12 @@
+package test;
+
+import hooks.ApiHooks;
 import org.junit.jupiter.api.*;
 import steps.AuthSteps;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class AuthTest extends ApiHooks{
+public class AuthTest extends ApiHooks {
     private static final AuthSteps authSteps = new AuthSteps();
 
     @BeforeEach

@@ -12,7 +12,7 @@ public class CustomProperties {
 
     public static void loadProperties() {
         try {
-            props.load(new FileInputStream("src/test/resources/config.properties"));
+            props.load(new FileInputStream(CustomProperties.getProps().getProperty("config.path")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

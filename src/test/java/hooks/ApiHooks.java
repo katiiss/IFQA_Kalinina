@@ -1,3 +1,5 @@
+package hooks;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import utils.CustomProperties;
